@@ -69,21 +69,3 @@ if (! function_exists('getNow')) {
 }
 
 /******************* */
-
-if (! function_exists('getUuid')) {
-    function getUuid()
-    {
-        return Str::uuid()->toString();
-    }
-}
-
-/*******Calculation Helper ********/
-
-if (! function_exists('percentToDecimal')) {
-    function percentToDecimal($percent): float
-    {
-        $percent = str_replace('%', '', $percent);
-
-        return $percent;
-    }
-}
