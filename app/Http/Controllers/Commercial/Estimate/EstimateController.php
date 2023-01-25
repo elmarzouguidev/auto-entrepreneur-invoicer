@@ -7,14 +7,12 @@ use App\Http\Requests\Commercial\Estimate\EstimateDeleteRequest;
 use App\Http\Requests\Commercial\Estimate\EstimateFormRequest;
 use App\Http\Requests\Commercial\Estimate\EstimateUpdateFormRequest;
 use App\Http\Requests\Commercial\Estimate\SendEmailFormRequest;
-use App\Mail\Commercial\Estimate\DeleteItemMail;
 use App\Mail\Commercial\Estimate\SendEstimateMail;
 use App\Models\Finance\Article;
 use App\Models\Finance\Estimate;
 use App\Models\Utilities\PaymentType;
 use App\Repositories\Client\ClientInterface;
 use App\Services\Commercial\Remise\RemiseCalculator;
-use App\Services\Commercial\Taxes\TVACalulator;
 use App\Services\Mail\CheckConnection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -23,7 +21,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class EstimateController extends Controller
 {
-    use TVACalulator;
+
     use RemiseCalculator;
 
     public function indexFilter()
@@ -41,7 +39,7 @@ class EstimateController extends Controller
                 ->withCount('invoice')
                 ->paginate(200)
                 ->appends(request()->query());
-        //->get();
+            //->get();
         } else {
             $estimates = Estimate::with(['client:id,entreprise,email', 'client.emails'])
                 ->withCount('invoice')
@@ -79,10 +77,6 @@ class EstimateController extends Controller
 
         $articles = $request->articles;
 
-        $totalPrice = collect($articles)->map(function ($item) {
-            return $item['prix_unitaire'] * $item['quantity'];
-        })->sum();
-
         $totalPriceRemise = collect($articles)->map(function ($item) {
             if ($item['remise'] && $item['remise'] > 0 && $item['remise'] !== 0) {
                 $itemPrice = $item['prix_unitaire'] * $item['quantity'];
@@ -110,6 +104,7 @@ class EstimateController extends Controller
         $estimate = new Estimate();
 
         $estimate->estimate_date = $request->date('estimate_date');
+
         $estimate->due_date = $request->date('due_date');
 
         $estimate->payment()->associate($request->payment_mode);
@@ -118,12 +113,7 @@ class EstimateController extends Controller
 
         $estimate->condition_general = $request->condition_general;
 
-        $estimate->price_ht = $totalPriceRemise;
-
-        //$estimate->ht_price_remise = $totalPrice;
-
         $estimate->price_total = $this->caluculateTva($totalPriceRemise);
-        $estimate->price_tva = $this->calculateOnlyTva($totalPriceRemise);
 
         $estimate->client_id = $request->client;
 
@@ -177,10 +167,6 @@ class EstimateController extends Controller
 
         $articlesData = array_filter(array_map('array_filter', $newArticles));
 
-        $totalArticlePrice = collect($newArticles)->map(function ($item) {
-            return $item['prix_unitaire'] * $item['quantity'];
-        })->sum();
-
         $totalPriceRemise = collect($newArticles)->map(function ($item) {
             if ($item['remise'] && $item['remise'] > 0 && $item['remise'] !== 0) {
                 $itemPrice = $item['prix_unitaire'] * $item['quantity'];
@@ -192,13 +178,12 @@ class EstimateController extends Controller
             return $item['prix_unitaire'] * $item['quantity'];
         })->sum();
 
-        $totalPrice = $estimate->price_ht + $totalPriceRemise;
-        $estimate->price_ht = $totalPrice;
+        $totalPrice = $estimate->price_total + $totalPriceRemise;
+
         $estimate->price_total = $this->caluculateTva($totalPrice);
-        $estimate->price_tva = $this->calculateOnlyTva($totalPrice);
-        //$estimate->ht_price_remise = $totalArticlePrice;
 
         $estimate->estimate_date = $request->date('estimate_date');
+
         $estimate->due_date = $request->date('due_date');
 
         $estimate->payment()->associate($request->payment_mode);
@@ -209,7 +194,7 @@ class EstimateController extends Controller
 
         $estimate->save();
 
-        if (! empty($articlesData)) {
+        if (!empty($articlesData)) {
             $estimate->articles()->createMany($articlesData);
         }
 
@@ -236,17 +221,9 @@ class EstimateController extends Controller
 
             $estimate->histories()->delete();
 
-            //if (CheckConnection::isConnected()) {
-
-            // Mail::to($estimate->company->email)->send(New DeleteItemMail($estimate));
-
-            // if (empty(Mail::failures())) {
-
             $estimate->delete();
 
             return redirect(route('commercial:estimates.index'))->with('success', 'Le devis  a éte supprimer avec success');
-            //}
-            //}
         }
 
         return redirect(route('commercial:estimates.index'))->with('success', 'erreur . . . ');
@@ -259,7 +236,7 @@ class EstimateController extends Controller
         $article = Article::whereUuid($request->article)->firstOrFail();
 
         if ($estimate && $article) {
-            $totalPrice = $estimate->price_ht;
+            $totalPrice = $estimate->price_total;
 
             $totalArticlePrice = $article->montant_ht;
 
@@ -272,15 +249,11 @@ class EstimateController extends Controller
                 ->forceDelete();
 
             if ($article) {
-                $estimate->price_ht = $finalPrice;
                 $estimate->price_total = $this->caluculateTva($finalPrice);
-                $estimate->price_tva = $this->calculateOnlyTva($finalPrice);
                 $estimate->save();
             }
             if ($estimate->articles()->count() <= 0) {
-                $estimate->price_ht = 0;
                 $estimate->price_total = 0;
-                $estimate->price_tva = 0;
                 $estimate->save();
             }
             $estimate->histories()->create([
@@ -316,16 +289,11 @@ class EstimateController extends Controller
         $emails = $request->input('emails.*.*');
 
         if (CheckConnection::isConnected()) {
-            if (isset($emails) && is_array($emails) && count($emails)) {
-                foreach ($emails as $email) {
-                    Mail::to($email)->send(new SendEstimateMail($estimate));
-                }
-            }
 
             Mail::to($estimate->client?->email)->send(new SendEstimateMail($estimate));
 
             if (empty(Mail::failures())) {
-                $estimate->update(['is_send' => ! $estimate->is_send]);
+                $estimate->update(['is_send' => !$estimate->is_send]);
 
                 $estimate->histories()->create([
                     'user_id' => auth()->id(),
