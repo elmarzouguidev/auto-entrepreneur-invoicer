@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('estimates', function (Blueprint $table) {
-            $table->after('price_ht', function ($table) {
+            $table->after('price_total', function ($table) {
                 $table->boolean('remise_fix')->default(false);
             });
         });

@@ -24,24 +24,7 @@ class PDFPublicController extends Controller
 
         $pdf = \PDF::loadView('theme.invoices_template.template1.index', compact('invoice', 'companyLogo', 'hasHeader'));
 
-        $fileName = $invoice->invoice_date->format('d-m-Y')."-[ {$invoice->client->entreprise} ]-".'FACTURE-'."{$invoice->code}".'.pdf';
-
-        return $pdf->stream($fileName);
-    }
-
-    public function showInvoiceAvoir(Request $request, InvoiceAvoir $invoice)
-    {
-        $request->validate(['has_header' => ['required', 'boolean']]);
-
-        $hasHeader = $request->has_header;
-
-        $invoice->load('articles', 'client', 'payment');
-
-        $companyLogo = $this->getCompanyLogo();
-
-        $pdf = \PDF::loadView('theme.invoices_template.avoirs.index', compact('invoice', 'companyLogo', 'hasHeader'));
-
-        $fileName = $invoice->invoice_date->format('d-m-Y')."-[ {$invoice->client->entreprise} ]-".'FACTURE-'."{$invoice->code}".'.pdf';
+        $fileName = $invoice->invoice_date->format('d-m-Y')."-[ {$invoice->client?->entreprise} ]-".'FACTURE-'."{$invoice->code}".'.pdf';
 
         return $pdf->stream($fileName);
     }
@@ -63,22 +46,6 @@ class PDFPublicController extends Controller
         return $pdf->stream($fileName);
     }
 
-    public function showBCommand(Request $request, BCommand $command)
-    {
-        $request->validate(['has_header' => ['required', 'boolean']]);
-
-        $hasHeader = $request->has_header;
-
-        $command->load('articles', 'provider');
-
-        $companyLogo = $this->getCompanyLogo();
-
-        $pdf = \PDF::loadView('theme.bons_template.template1.index', compact('command', 'companyLogo', 'hasHeader'));
-
-        $fileName = $command->date_command->format('d-m-Y')."-[ {$command->provider->entreprise} ]-".'BON-COMMAND-'."{$command->code}".'.pdf';
-
-        return $pdf->stream($fileName);
-    }
 
     private function getCompanyLogo()
     {

@@ -14,13 +14,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('estimates', function (Blueprint $table) {
-            $table->after('price_tva', function ($table) {
+            $table->after('price_total', function ($table) {
                 $table->unsignedBigInteger('ht_price_remise')->default(0);
             });
         });
 
         Schema::table('invoices', function (Blueprint $table) {
-            $table->after('price_tva', function ($table) {
+            $table->after('price_total', function ($table) {
                 $table->unsignedBigInteger('ht_price_remise')->default(0);
             });
         });

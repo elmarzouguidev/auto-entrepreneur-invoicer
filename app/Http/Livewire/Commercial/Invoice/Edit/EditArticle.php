@@ -6,12 +6,11 @@ use App\Http\Requests\Commercial\Invoice\ArticleUpdateFormRequest;
 use App\Models\Finance\Article;
 use App\Models\Finance\Invoice;
 use App\Services\Commercial\Remise\RemiseCalculator;
-use App\Services\Commercial\Taxes\TVACalulator;
 use Livewire\Component;
 
 class EditArticle extends Component
 {
-    use TVACalulator;
+
     use RemiseCalculator;
 
     public Article $article;
@@ -74,11 +73,8 @@ class EditArticle extends Component
             ]);
         }
 
-        $totalPrice = ($invoice->price_ht - $oldArticlePrice) + $article->montant_ht;
-        $invoice->price_ht = $totalPrice;
-        $invoice->price_total = $this->caluculateTva($totalPrice);
-        $invoice->price_tva = $this->calculateOnlyTva($totalPrice);
-
+        $totalPrice = ($invoice->price_total - $oldArticlePrice) + $article->montant_ht;
+        $invoice->price_total = $totalPrice;
         $invoice->save();
 
         $invoice->histories()->create([
