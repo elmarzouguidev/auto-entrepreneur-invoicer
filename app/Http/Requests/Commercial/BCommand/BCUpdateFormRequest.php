@@ -1,0 +1,67 @@
+<?php
+
+namespace App\Http\Requests\Commercial\BCommand;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class BCUpdateFormRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function getArticles()
+    {
+        $articles = $this->articlesnew ?? [];
+
+        return collect($articles)
+            ->whereNull('montant_ht')
+            ->collect();
+    }
+
+    public function getOlderArticles()
+    {
+        $articles = $this->articles ?? [];
+
+        return collect($articles)
+            ->whereNotNull('articleuuid')
+            ->collect();
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'provider' => ['required', 'integer'],
+
+            //'b_code' => ['required', 'string', 'unique:b_commands'],
+            'date_command' => ['required', 'date'],
+            //'date_due' => ['required', 'date'],
+
+            'admin_notes' => ['nullable', 'string'],
+            // 'client_notes' => ['nullable', 'string'],
+            'condition_general' => ['nullable', 'string'],
+
+            'articlesnew' => ['nullable', 'array'],
+
+            'articlesnew.*.articleuuid' => ['nullable', 'uuid'],
+
+            'articlesnew.*.designation' => ['nullable', 'string'],
+            'articlesnew.*.description' => ['nullable', 'string'],
+            'articlesnew.*.quantity' => ['nullable', 'integer'],
+            'articlesnew.*.prix_unitaire' => ['nullable', 'numeric', 'digits_between:1,20'],
+            //'articlesnew.*.montant_ht' => ['nullable', 'numeric'],
+            'articlesnew.*.remise' => ['nullable', 'numeric', 'digits_between:1,20'],
+        ];
+    }
+}
