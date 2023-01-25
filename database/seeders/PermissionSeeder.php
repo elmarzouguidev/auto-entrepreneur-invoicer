@@ -39,29 +39,11 @@ class PermissionSeeder extends Seeder
         ['name' => 'estimates.edit', 'guard_name' => 'admin'],
         ['name' => 'estimates.delete', 'guard_name' => 'admin'],
 
-        ['name' => 'bcommandes.browse', 'guard_name' => 'admin'],
-        ['name' => 'bcommandes.read', 'guard_name' => 'admin'],
-        ['name' => 'bcommandes.create', 'guard_name' => 'admin'],
-        ['name' => 'bcommandes.edit', 'guard_name' => 'admin'],
-        ['name' => 'bcommandes.delete', 'guard_name' => 'admin'],
-
-        ['name' => 'providers.browse', 'guard_name' => 'admin'],
-        ['name' => 'providers.read', 'guard_name' => 'admin'],
-        ['name' => 'providers.create', 'guard_name' => 'admin'],
-        ['name' => 'providers.edit', 'guard_name' => 'admin'],
-        ['name' => 'providers.delete', 'guard_name' => 'admin'],
-
         ['name' => 'bills.browse', 'guard_name' => 'admin'],
         ['name' => 'bills.read', 'guard_name' => 'admin'],
         ['name' => 'bills.create', 'guard_name' => 'admin'],
         ['name' => 'bills.edit', 'guard_name' => 'admin'],
         ['name' => 'bills.delete', 'guard_name' => 'admin'],
-
-        ['name' => 'expenses.browse', 'guard_name' => 'admin'],
-        ['name' => 'expenses.read', 'guard_name' => 'admin'],
-        ['name' => 'expenses.create', 'guard_name' => 'admin'],
-        ['name' => 'expenses.edit', 'guard_name' => 'admin'],
-        ['name' => 'expenses.delete', 'guard_name' => 'admin'],
 
     ];
 
