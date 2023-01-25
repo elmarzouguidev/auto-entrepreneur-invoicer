@@ -4,7 +4,7 @@
     </a>
 </p>
 
-## Facturis Light  by Abdelghafour
+## systéme de gestion et de facturation  by Abdelghafour
 
 ### Premium Partners
 
@@ -15,4 +15,4 @@
 
 ## License
 
-Facturis Light software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+this software licensed under the [MIT license](https://opensource.org/licenses/MIT).
