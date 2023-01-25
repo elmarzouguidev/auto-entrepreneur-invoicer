@@ -177,15 +177,7 @@ return [
 
         App\Providers\ViewComposerServiceProvider::class,
 
-        App\Providers\MacroServiceProvider::class,
-
-        App\Providers\BladeServiceProvider::class,
-
         App\Providers\RepositoryServiceProvider::class,
-
-        App\Providers\HelpersServiceProvider::class,
-
-        App\Providers\BackupServiceProvider::class,
 
     ],
 
