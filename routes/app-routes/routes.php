@@ -11,7 +11,7 @@ use App\Http\Controllers\Administration\Setting\CurrencyController;
 use App\Http\Controllers\Administration\Setting\ExpenseCategoryController;
 use App\Http\Controllers\Administration\Setting\PaymentMethodController;
 use App\Http\Controllers\Administration\Setting\SettingController;
-use App\Http\Controllers\Administration\Setting\TaxeController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/admin', [DashboardController::class, 'index'])->name('home');
@@ -28,14 +28,6 @@ Route::group(['prefix' => 'auth', 'middleware' => ['role:SuperAdmin']], function
 
         //Route::get('/edit/permissions/{admin}', [AdminController::class, 'edit'])->name('admins.edit');
         Route::post('/edit/permissions/{admin}', [AdminController::class, 'syncPermission'])->name('admins.syncPermissions');
-    });
-});
-
-Route::group(['prefix' => 'emails'], function () {
-    Route::get('/inbox', [EmailController::class, 'index'])->name('emails.inbox');
-
-    Route::group(['prefix' => 'overview'], function () {
-        Route::get('/email', [EmailController::class, 'show'])->name('emails.show');
     });
 });
 
@@ -58,12 +50,8 @@ Route::group(['prefix' => 'clients'], function () {
         Route::get('/client/{client}', [ClientController::class, 'show'])->name('clients.show');
     });
 
-    Route::post('/import', [ImportClientController::class, 'import'])->name('clients.import');
 });
 
-Route::group(['prefix' => 'files-importers', 'middleware' => 'role:SuperAdmin'], function () {
-    Route::get('/csv', [CSVImportController::class, 'index'])->name('files.importers.csv');
-});
 
 Route::group(['prefix' => 'profile'], function () {
     Route::get('/', [ProfilController::class, 'index'])->name('profile.index');
@@ -73,7 +61,9 @@ Route::group(['prefix' => 'profile'], function () {
 });
 
 Route::group(['prefix' => 'settings'], function () {
+
     Route::get('/', [SettingController::class, 'index'])->name('settings.index');
+
     Route::post('/', [SettingController::class, 'update'])->name('settings.store');
 
     Route::group(['prefix' => 'emails'], function () {
@@ -83,12 +73,6 @@ Route::group(['prefix' => 'settings'], function () {
     Route::group(['prefix' => 'invoice'], function () {
         Route::get('/', [SettingController::class, 'invoice'])->name('settings.invoice');
         Route::post('/', [SettingController::class, 'invoiceUpdate'])->name('settings.invoice.store');
-    });
-
-    Route::group(['prefix' => 'taxes'], function () {
-        Route::get('/', [TaxeController::class, 'index'])->name('settings.taxes');
-        Route::post('/', [TaxeController::class, 'store'])->name('settings.taxes.store');
-        Route::delete('/', [TaxeController::class, 'delete'])->name('settings.taxes.delete');
     });
 
     Route::group(['prefix' => 'payment-methods'], function () {
@@ -101,11 +85,5 @@ Route::group(['prefix' => 'settings'], function () {
         Route::get('/', [CurrencyController::class, 'index'])->name('settings.currency');
         Route::post('/', [CurrencyController::class, 'store'])->name('settings.currency.store');
         Route::delete('/', [CurrencyController::class, 'delete'])->name('settings.currency.delete');
-    });
-
-    Route::group(['prefix' => 'expenses/categories'], function () {
-        Route::get('/', [ExpenseCategoryController::class, 'index'])->name('settings.expense');
-        Route::post('/', [ExpenseCategoryController::class, 'store'])->name('settings.expense.store');
-        Route::delete('/', [ExpenseCategoryController::class, 'delete'])->name('settings.expense.delete');
     });
 });

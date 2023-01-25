@@ -17,20 +17,12 @@ Route::group(['prefix' => 'invoices', 'middleware' => 'role_or_permission:SuperA
 
     Route::post('/send', [InvoiceController::class, 'sendInvoice'])->name('invoices.send');
 
-    Route::group(['prefix' => 'overview/invoice'], function () {
-        Route::get('/{invoice}', [InvoiceController::class, 'single'])->name('invoices.single');
-    });
 
     Route::group(['prefix' => 'edit/invoice'], function () {
         Route::get('/{invoice}', [InvoiceController::class, 'edit'])->can('invoices.edit')->name('invoices.edit');
         Route::post('/{invoice}', [InvoiceController::class, 'update'])->can('invoices.edit')->name('invoices.update');
         Route::delete('/delete', [InvoiceController::class, 'deleteArticle'])->can('invoices.delete')->name('invoices.delete.article');
     });
-
-    Route::group(['prefix' => 'PDF/invoice'], function () {
-        Route::get('/{invoice}', [PDFBuilderController::class, 'build'])->name('invoices.pdf.build');
-    });
-
 });
 
 Route::group(['prefix' => 'bills'], function () {

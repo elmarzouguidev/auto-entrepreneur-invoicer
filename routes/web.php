@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Authentification\ForgotPasswordController;
 use App\Http\Controllers\Authentification\ResetPasswordController;
-use App\Http\Controllers\Importer\ImporterController;
 use App\Http\Controllers\Web\PDFPublicController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,10 +35,6 @@ Route::group(['prefix' => 'views'], function () {
         Route::get('/{command}', [PDFPublicController::class, 'showBCommand'])->name('public.show.bcommand');
     });
 });
-
-Route::get('/upload', [ImporterController::class, 'index']);
-Route::post('/upload', [ImporterController::class, 'upload']);
-Route::get('/batch', [ImporterController::class, 'batch']);
 
 Route::group(['prefix' => 'app'], function () {
     Route::get('password/request', [ForgotPasswordController::class, 'showLinkRequestForm'])
