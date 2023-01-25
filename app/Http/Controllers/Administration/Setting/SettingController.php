@@ -25,7 +25,6 @@ class SettingController extends Controller
         $settings->name = $request->name;
         $settings->website = $request->website;
         $settings->addresse = $request->addresse;
-        $settings->telephone_b = $request->telephone_b;
         $settings->telephone_a = $request->telephone_a;
         $settings->email = $request->email;
         $settings->rc = $request->rc;

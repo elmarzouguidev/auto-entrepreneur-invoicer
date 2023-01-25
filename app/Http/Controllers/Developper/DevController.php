@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class DevController extends Controller
 {
-    protected array $tables = ['invoices', 'invoices_avoir', 'estimates', 'bills', 'articles'];
 
     public function composerDump()
     {
@@ -18,17 +17,6 @@ class DevController extends Controller
     public function composerUpdate()
     {
         \shell_exec('composer update');
-    }
-
-    public function clearTables()
-    {
-        foreach ($this->tables as $name) {
-            //if you don't want to truncate migrations
-            //if ($name == 'migrations') {
-            //continue;
-            //}
-            //  DB::table($name)->truncate();
-        }
     }
 
     public function storageLink()

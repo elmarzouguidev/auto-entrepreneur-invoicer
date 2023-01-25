@@ -18,7 +18,6 @@ class BillController extends Controller
 
         $invoices = Invoice::select('id', 'uuid', 'code', 'price_total', 'full_number')
             ->doesntHave('bill')
-            ->doesntHave('avoir')
             ->get();
 
         $payments = PaymentType::select(['id', 'name'])->get();
@@ -80,9 +79,7 @@ class BillController extends Controller
             'bill_mode' => $request->bill_mode ?? $invoice->payment?->id,
             'reference' => $request->reference,
             'notes' => $request->notes,
-            'price_ht' => $invoice->price_ht,
             'price_total' => $invoice->price_total,
-            'price_tva' => $invoice->price_tva,
         ];
 
         $invoice->bill()->create($biller);
@@ -103,9 +100,8 @@ class BillController extends Controller
             'bill_mode' => $request->bill_mode,
             'reference' => $request->reference,
             'notes' => $request->notes,
-            'price_ht' => $invoice->price_ht,
             'price_total' => $invoice->price_total,
-            'price_tva' => $invoice->price_tva,
+
         ];
 
         $invoice->bill()->create($biller);
