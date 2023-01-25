@@ -16,8 +16,6 @@ class CompanySettings extends Settings
 
     public string $telephone_a;
 
-    public ?string $telephone_b;
-
     public string $email;
 
     public ?string $rc;

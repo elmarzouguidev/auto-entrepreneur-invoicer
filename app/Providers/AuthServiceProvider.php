@@ -14,18 +14,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
 
-        'App\Models\Finance\Buy\BuyInvoice' => 'App\Policies\BuyInvoicePolicy',
-        'App\Models\Finance\Buy\BuyEstimate' => 'App\Policies\BuyEstimatePolicy',
 
-        'App\Models\Catalog\Product' => 'App\Policies\ProductPolicy',
-        'App\Models\Catalog\Category' => 'App\Policies\CategoryPolicy',
-        'App\Models\Catalog\Unite' => 'App\Policies\UnitePolicy',
-
-        'App\Models\Stock\Adjustment' => 'App\Policies\AdjustmentPolicy',
-        'App\Models\Stock\City' => 'App\Policies\CityPolicy',
-        'App\Models\Stock\Warehouse' => 'App\Policies\WarehousePolicy',
-
-        'App\Models\Expense\Expense' => 'App\Policies\Expense\ExpensePolicy',
     ];
 
     /**
