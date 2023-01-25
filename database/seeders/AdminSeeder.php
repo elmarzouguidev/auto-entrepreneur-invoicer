@@ -19,53 +19,21 @@ class AdminSeeder extends Seeder
         $user = [
             'nom' => 'Elmarzougui',
             'prenom' => 'Abdelghafour',
-            'telephone' => '0677512753',
-            'email' => 'abdelgha4or@gmail.com',
+            'telephone' => '0612345678',
+            'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
-            'password' => Hash::make('123456789@'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'super_admin' => true,
         ];
 
-        $user2 = [
-            'nom' => 'BOUANI',
-            'prenom' => 'DOUNIA',
-            'telephone' => '0620772936',
-            'email' => 'dounia.bouani20@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('wedo2023'),
-            'remember_token' => Str::random(10),
-            'super_admin' => true,
-        ];
+        $admin = User::whereEmail('admin@gmail.com')->first();
 
-        $user3 = [
-            'nom' => 'HARIT',
-            'prenom' => 'Yassine',
-            'telephone' => '0625238402',
-            'email' => 'harityassine9@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('123456789@'),
-            'remember_token' => Str::random(10),
-            'super_admin' => true,
-        ];
-
-        $admin = User::whereEmail('abdelgha4or@gmail.com')->first();
-        $admin2 = User::whereEmail('dounia.bouani20@gmail.com')->first();
-        $admin3 = User::whereEmail('harityassine9@gmail.com')->first();
-
-        if (!$admin && !$admin2 && !$admin3) {
+        if (!$admin) {
             $newAdmin = User::create($user);
-            $newAdmin->assignRole('SuperAdmin', 'Developper');
-
-            $newAdmin2 = User::create($user2);
-            $newAdmin2->assignRole('SuperAdmin');
-
-            $newAdmin3 = User::create($user3);
-            $newAdmin3->assignRole('SuperAdmin');
+            $newAdmin->assignRole('SuperAdmin');
         } else {
-            $admin->assignRole('SuperAdmin', 'Developper');
-            $admin2->assignRole('SuperAdmin');
-            $admin3->assignRole('SuperAdmin');
+            $admin->assignRole('SuperAdmin');
         }
     }
 }
