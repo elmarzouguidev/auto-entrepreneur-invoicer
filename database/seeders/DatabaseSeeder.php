@@ -17,25 +17,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->clearAll();
 
-        $this->call(CurrencySeeder::class);
-        $this->call(ExpenseCategorySeeder::class);
-        $this->call(ScheduleSeeder::class);
         $this->call(PaymentTypeSeeder::class);
 
-        $this->call(CategorySeeder::class);
-        $this->call(BrandSeeder::class);
 
         $this->call(RoleSeeder::class);
         $this->call(PermissionSeeder::class);
 
         $this->call(AdminSeeder::class);
 
-        $this->call(UniteSeeder::class);
-        $this->call(TaxSeeder::class);
-        $this->call(CitySeeder::class);
-        $this->call(WarehouseSeeder::class);
-
-        \App\Models\Finance\Provider::factory(5)->create();
         \App\Models\Client::factory(5)->create();
     }
 
