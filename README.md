@@ -6,10 +6,7 @@
 
 ## systéme de gestion et de facturation  by Abdelghafour
 
-### Premium Partners
 
-- **[Wedo APP](https://wedoapp.ma/)**
-  
 - **[Elmarzougui.com](https://elmarzougui.com/)**
 
 

@@ -16,13 +16,7 @@ return [
 
         'cache-live-time' => 30,
     ],
-
-    'tickets' => [
-
-        'prefix' => 'TCK',
-        'start_from' => 256,
-    ],
-
+    
     'clients' => [
 
         'prefix' => 'CLT',
@@ -40,10 +34,4 @@ return [
         'due_date_after' => 15,
         'default_condition' => 'Délai 2 semaines après la réception de bon de commande',
     ],
-
-    'providers' => [
-        'prefix' => 'FRNS-',
-
-    ],
-
 ];
