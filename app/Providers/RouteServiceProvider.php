@@ -49,9 +49,6 @@ class RouteServiceProvider extends ServiceProvider
 
             $this->adminRoutes();
             $this->commercialRoutes();
-            $this->commercialBuyRoutes();
-            $this->expensesRoutes();
-            $this->backuperRoutes();
             $this->devlopperRoutes();
         });
     }
@@ -96,38 +93,11 @@ class RouteServiceProvider extends ServiceProvider
             ->group(base_path('routes/app-routes/commercial_routes.php'));
     }
 
-    private function commercialBuyRoutes()
-    {
-        Route::middleware(['web', 'auth'])
-            ->prefix('app/commercial/buy')
-            ->name('buy:')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/app-routes/commercial_buy_routes.php'));
-    }
-
-    private function expensesRoutes()
-    {
-        Route::middleware(['web', 'auth'])
-            ->prefix('app/expenses')
-            ->name('expense:')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/app-routes/expenses_routes.php'));
-    }
-
     private function devlopperRoutes()
     {
         Route::middleware('web')
             ->prefix('dev')
             ->namespace($this->namespace)
             ->group(base_path('routes/developper/routes.php'));
-    }
-
-    private function backuperRoutes()
-    {
-        Route::middleware(['web', 'auth', 'role:SuperAdmin'])
-            ->namespace($this->namespace)
-            ->prefix('app/backup')
-            ->name('admin:backup:')
-            ->group(base_path('routes/app-routes/backup-routes.php'));
     }
 }
