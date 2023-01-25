@@ -26,7 +26,6 @@ class CreateArticlesTable extends Migration
             $table->bigInteger('quantity')->default(0);
             $table->unsignedBigInteger('prix_unitaire')->default(0);
             $table->unsignedBigInteger('montant_ht')->default(0);
-            //$table->string('taxe')->default('20%');
             $table->timestamps();
             $table->softDeletes();
         });

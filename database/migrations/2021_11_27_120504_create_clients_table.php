@@ -26,16 +26,11 @@ class CreateClientsTable extends Migration
             $table->longText('addresse');
 
             $table->string('rc')->unique()->nullable();
-            $table->string('ice')->unique();
+            $table->string('ice')->unique()->nullable();
             $table->string('logo')->nullable();
             $table->longText('description')->nullable();
 
             $table->boolean('active')->default(true);
-
-            $table->foreignId('category_id')
-                ->nullable()
-                ->index()
-                ->constrained();
 
             $table->timestamps();
 

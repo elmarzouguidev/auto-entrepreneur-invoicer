@@ -27,9 +27,7 @@ class CreateEstimatesTable extends Migration
             $table->string('code');
             $table->string('full_number')->unique();
 
-            $table->unsignedBigInteger('price_ht')->default(0);
             $table->unsignedBigInteger('price_total')->default(0);
-            $table->unsignedBigInteger('price_tva')->default(0);
 
             $table->integer('status')->default(\App\Constants\Response::DEVIS_EN_ATTENTE);
 
